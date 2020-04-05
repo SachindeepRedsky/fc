@@ -2,14 +2,12 @@
     <Label text="Home"></Label>
 </ActionBar>
 
-<GridLayout>
-    <FoldingCell>
-        <StackLayout>
-            <TextField></TextField>
-        </StackLayout>
-        <StackLayout>
+<GridLayout backgroundColor="red">
+    <FoldingCell backgroundColor="transparent" (tap)="onTap($event)" (loaded)="onLoaded($event)">
+        <!-- <FoldingCellItem height="100" backgroundColor="blue">
+            <Label text="vcxvxcv"></Label>
+        </!-->
 
-        </StackLayout>
     </FoldingCell>
 
 </GridLayout>

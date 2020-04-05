@@ -17,4 +17,15 @@ export class HomeComponent implements OnInit {
     ngOnInit(): void {
         // Init your component properties here.
     }
+
+    onLoaded(args: any) {
+        console.log('Loaed')
+    }
+
+    onTap(args: any) {
+        console.log("Tapped:::", args.object)
+        var fc = args.object;
+        fc.android.toggle(false);
+        
+    }
 }

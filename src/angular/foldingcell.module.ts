@@ -12,3 +12,4 @@ import { DIRECTIVES } from "./foldingcell.directive"
 export class FoldingCellModule { }
 
 registerElement("FoldingCell", () => require("../").FoldingCell);
+registerElement("FoldingCellItem", () => require("../").FoldingCellItem);

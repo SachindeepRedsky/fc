@@ -5,4 +5,10 @@ import { Directive } from "@angular/core"; // TODO: check require .Directive wit
 })
 export class FoldingCellDirective { }
 
-export const DIRECTIVES = [FoldingCellDirective];
+
+@Directive({
+    selector: "FoldingCellItem"
+})
+export class FoldingCellItemDirective { }
+
+export const DIRECTIVES = [FoldingCellDirective, FoldingCellItemDirective];
