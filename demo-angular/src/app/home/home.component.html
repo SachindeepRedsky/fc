@@ -1,13 +1,45 @@
-<ActionBar>
+<!-- <ActionBar>
     <Label text="Home"></Label>
-</ActionBar>
+</ActionBar> -->
 
-<GridLayout backgroundColor="red">
-    <FoldingCell backgroundColor="transparent" (tap)="onTap($event)" (loaded)="onLoaded($event)">
-        <!-- <FoldingCellItem height="100" backgroundColor="blue">
-            <Label text="vcxvxcv"></Label>
-        </!-->
 
-    </FoldingCell>
+<GridLayout (loaded)="onListLoaded($event)">
+
+    <ListView #listRef [items]="items" (loaded)="onListLoaded($event)">
+        <ng-template>
+            <FoldingCell verticalAlignment="top" padding="0" margin="0" (tap)="onTap($event)" backgroundColor="pink"
+                (loaded)="onLoaded($event)">
+                <StackLayout visibility="hidden" padding="0" margin="0" width="100%" backgroundColor="yellow">
+                    <Image src="res://logo" height="500" stretch="fill"></Image>
+                </StackLayout>
+                <StackLayout height="200" padding="0" margin="0" width="100%" backgroundColor="blue">
+                    <Image src="res://icon" height="200" stretch="fill"></Image>
+                </StackLayout>
+            </FoldingCell>
+        </ng-template>
+    </ListView>
+
+
+    <!-- <FoldingCell verticalAlignment="top" (tap)="onTap($event)" (loaded)="onLoaded($event)">
+        <StackLayout visibility="hidden" width="100%" backgroundColor="red">
+            <Image src="res://logo" height="500" stretch="fill"></Image>
+        </StackLayout>
+        <StackLayout height="200" width="100%" backgroundColor="blue">
+            <Image src="res://icon" height="200" stretch="fill"></Image>
+        </StackLayout>
+    </FoldingCell> -->
+
+    <!-- <FoldingCell verticalAlignment="top" (tap)="onTap($event)" (loaded)="onLoaded($event)">
+        <StackLayout visibility="hidden" width="100%" backgroundColor="yellow">
+            <Image src="res://logo" height="500" stretch="fill"></Image>
+        </StackLayout>
+        <StackLayout height="200" width="100%" backgroundColor="blue">
+            <Image src="res://icon" height="200" stretch="fill"></Image>
+        </StackLayout>
+    </FoldingCell> -->
+
+    <!-- <FoldingListView>
+
+    </FoldingListView> -->
 
 </GridLayout>

@@ -4,6 +4,7 @@ import { NativeScriptModule } from "nativescript-angular/nativescript.module";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { FoldingCellModule } from "../../../src/angular/foldingcell.module";
+// import { FoldingListViewModule } from "nativescript-folding-list-view/angular";
 
 @NgModule({
     bootstrap: [
@@ -12,7 +13,8 @@ import { FoldingCellModule } from "../../../src/angular/foldingcell.module";
     imports: [
         NativeScriptModule,
         AppRoutingModule,
-        FoldingCellModule
+        FoldingCellModule,
+        // FoldingListViewModule
     ],
     declarations: [
         AppComponent
