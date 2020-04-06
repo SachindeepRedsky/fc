@@ -3,10 +3,17 @@ hooks/
 node_modules/
 platforms/
 
+
 # NativeScript Template
 *.js.map
 *.js
 !webpack.config.js
+
+!plugin/*.js
+!plugin/
+!plugin/platforms
+!plugin/platforms/android/
+!plugin/platforms/ios/
 
 # Logs
 logs
