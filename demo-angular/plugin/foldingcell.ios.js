@@ -166,19 +166,23 @@ var FoldingCellView = (function (_super) {
 
     FoldingCellView.prototype.createNativeView = function () {
         var fcv = FoldingCellExtended.new().init(UITableViewCellStyleDefault,'Reuse');
+        fcv._createForegroundView(75);
+        fcv._createContainerView(75);
+        // this.backViewColor = parent.backViewColor.ios;
+        fcv.commonInit();   
         // fcv.resetNativeViews(90);
         // imageView.contentMode = 1;
         // imageView.userInteractionEnabled = true;
         return fcv;
     };
-    FoldingCellView.prototype.initNativeView = function () {
-        this._createForegroundView(75);
-        this._createContainerView(75);
-        // this.backViewColor = parent.backViewColor.ios;
-        this.commonInit();      
-          // _super.prototype.initNativeView.call(this);
-        // this._setNativeClipToBounds();
-    };
+    // FoldingCellView.prototype.initNativeView = function () {
+    //     // this._createForegroundView(75);
+    //     // this._createContainerView(75);
+    //     // // this.backViewColor = parent.backViewColor.ios;
+    //     // this.commonInit();      
+    //       // _super.prototype.initNativeView.call(this);
+    //     // this._setNativeClipToBounds();
+    // };
     // FoldingCellView.prototype.onMeasure = function (widthMeasureSpec, heightMeasureSpec) {
     //     var _this = this;
     //     _super.prototype.onMeasure.call(this, widthMeasureSpec, heightMeasureSpec);
