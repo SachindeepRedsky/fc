@@ -51,7 +51,7 @@ var FoldingCellExtended = (function (_super) {
         this.commonInit();
     };
     FoldingCellExtended.prototype.resetContainerViewHeightContraint = function (newHeight) {
-        var topConstraintValue = view_1.layout.toDeviceIndependentPixels(this.containerViewTNS._constraintTop);
+        var topConstraintValue = view_1.layout.toDeviceIndependentPixels(75);
         if (this._containerViewHeightConstraints) {
             NSLayoutConstraint.deactivateConstraints(this._containerViewHeightConstraints);
         }
