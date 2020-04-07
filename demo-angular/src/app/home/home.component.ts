@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { registerElement } from "nativescript-angular/element-registry";
 import { ListView } from "@nativescript/core/ui/list-view/list-view"
+import { isAndroid } from "tns-core-modules/ui/page/page";
 // import { Foldingcell } from "nativescript-foldingcell/foldingcell.android"
 
 // registerElement("FoldingCell", () => require('nativescript-foldingcell/foldingcell.android'));
@@ -42,6 +43,8 @@ export class HomeComponent implements OnInit {
     onTap(args: any) {
         console.log("Tapped:::", args.object)
         var fc = args.object;
-        fc.android.toggle(false);
+        if (isAndroid) {
+            fc.android.toggle(false);
+        }
     }
 }
