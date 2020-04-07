@@ -175,7 +175,8 @@ var FoldingCellView = (function (_super) {
         this._createForegroundView(75);
         this._createContainerView(75);
         // this.backViewColor = parent.backViewColor.ios;
-        this.commonInit();        // _super.prototype.initNativeView.call(this);
+        this.commonInit();      
+          // _super.prototype.initNativeView.call(this);
         // this._setNativeClipToBounds();
     };
     FoldingCellView.prototype.onMeasure = function (widthMeasureSpec, heightMeasureSpec) {

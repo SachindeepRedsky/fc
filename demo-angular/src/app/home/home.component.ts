@@ -33,9 +33,10 @@ export class HomeComponent implements OnInit {
 
     onListLoaded(args: any) {
         var list = args.object;
-        var la = list.android;
-        la.setClipChildren(false);
-        la.setClipToPadding(false);
+        console.log('FoldingCelllist:::', list.ios);
+        // var la = list.android;
+        // la.setClipChildren(false);
+        // la.setClipToPadding(false);
     }
 
     onTap(args: any) {
