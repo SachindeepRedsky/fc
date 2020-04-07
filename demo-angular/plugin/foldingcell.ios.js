@@ -136,7 +136,7 @@ var FoldingCellExtended = (function (_super) {
     };
     return FoldingCellExtended;
 }(FoldingCell));
-exports.FoldingCell = FoldingCellExtended;
+// exports.FoldingCell = FoldingCellExtended;
 
 
 
