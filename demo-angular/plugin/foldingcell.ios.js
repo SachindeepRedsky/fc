@@ -179,147 +179,147 @@ var FoldingCellView = (function (_super) {
           // _super.prototype.initNativeView.call(this);
         // this._setNativeClipToBounds();
     };
-    FoldingCellView.prototype.onMeasure = function (widthMeasureSpec, heightMeasureSpec) {
-        var _this = this;
-        _super.prototype.onMeasure.call(this, widthMeasureSpec, heightMeasureSpec);
-        var measureWidth = 0;
-        var measureHeight = 0;
-        var width = folding_list_view_common_1.layout.getMeasureSpecSize(widthMeasureSpec);
-        var widthMode = folding_list_view_common_1.layout.getMeasureSpecMode(widthMeasureSpec);
-        var height = folding_list_view_common_1.layout.getMeasureSpecSize(heightMeasureSpec);
-        var heightMode = folding_list_view_common_1.layout.getMeasureSpecMode(heightMeasureSpec);
-        var isVertical = this.orientation === "vertical";
-        var horizontalPaddingsAndMargins = this.effectivePaddingLeft + this.effectivePaddingRight + this.effectiveBorderLeftWidth + this.effectiveBorderRightWidth;
-        var verticalPaddingsAndMargins = this.effectivePaddingTop + this.effectivePaddingBottom + this.effectiveBorderTopWidth + this.effectiveBorderBottomWidth;
-        var measureSpec;
-        var mode = isVertical ? heightMode : widthMode;
-        var remainingLength;
-        if (mode === folding_list_view_common_1.layout.UNSPECIFIED) {
-            measureSpec = folding_list_view_common_1.layout.UNSPECIFIED;
-            remainingLength = 0;
-        }
-        else {
-            measureSpec = folding_list_view_common_1.layout.AT_MOST;
-            remainingLength = isVertical ? height - verticalPaddingsAndMargins : width - horizontalPaddingsAndMargins;
-        }
-        var childMeasureSpec;
-        var childWidth = (widthMode === folding_list_view_common_1.layout.UNSPECIFIED) ? 0 : width - horizontalPaddingsAndMargins;
-        childWidth = Math.max(0, childWidth);
-        childMeasureSpec = folding_list_view_common_1.layout.makeMeasureSpec(childWidth, widthMode);
+    // FoldingCellView.prototype.onMeasure = function (widthMeasureSpec, heightMeasureSpec) {
+    //     var _this = this;
+    //     _super.prototype.onMeasure.call(this, widthMeasureSpec, heightMeasureSpec);
+    //     var measureWidth = 0;
+    //     var measureHeight = 0;
+    //     var width = folding_list_view_common_1.layout.getMeasureSpecSize(widthMeasureSpec);
+    //     var widthMode = folding_list_view_common_1.layout.getMeasureSpecMode(widthMeasureSpec);
+    //     var height = folding_list_view_common_1.layout.getMeasureSpecSize(heightMeasureSpec);
+    //     var heightMode = folding_list_view_common_1.layout.getMeasureSpecMode(heightMeasureSpec);
+    //     var isVertical = this.orientation === "vertical";
+    //     var horizontalPaddingsAndMargins = this.effectivePaddingLeft + this.effectivePaddingRight + this.effectiveBorderLeftWidth + this.effectiveBorderRightWidth;
+    //     var verticalPaddingsAndMargins = this.effectivePaddingTop + this.effectivePaddingBottom + this.effectiveBorderTopWidth + this.effectiveBorderBottomWidth;
+    //     var measureSpec;
+    //     var mode = isVertical ? heightMode : widthMode;
+    //     var remainingLength;
+    //     if (mode === folding_list_view_common_1.layout.UNSPECIFIED) {
+    //         measureSpec = folding_list_view_common_1.layout.UNSPECIFIED;
+    //         remainingLength = 0;
+    //     }
+    //     else {
+    //         measureSpec = folding_list_view_common_1.layout.AT_MOST;
+    //         remainingLength = isVertical ? height - verticalPaddingsAndMargins : width - horizontalPaddingsAndMargins;
+    //     }
+    //     var childMeasureSpec;
+    //     var childWidth = (widthMode === folding_list_view_common_1.layout.UNSPECIFIED) ? 0 : width - horizontalPaddingsAndMargins;
+    //     childWidth = Math.max(0, childWidth);
+    //     childMeasureSpec = folding_list_view_common_1.layout.makeMeasureSpec(childWidth, widthMode);
 
-        // if (isVertical) {
-        //     var childWidth = (widthMode === folding_list_view_common_1.layout.UNSPECIFIED) ? 0 : width - horizontalPaddingsAndMargins;
-        //     childWidth = Math.max(0, childWidth);
-        //     childMeasureSpec = folding_list_view_common_1.layout.makeMeasureSpec(childWidth, widthMode);
-        // }
-        // else {
-        //     var childHeight = (heightMode === folding_list_view_common_1.layout.UNSPECIFIED) ? 0 : height - verticalPaddingsAndMargins;
-        //     childHeight = Math.max(0, childHeight);
-        //     childMeasureSpec = folding_list_view_common_1.layout.makeMeasureSpec(childHeight, heightMode);
-        // }
-        var childSize;
-        this.eachLayoutChild(function (child, last) {
-            // if (isVertical) {
-                childSize = folding_list_view_common_1.View.measureChild(_this, child, childMeasureSpec, folding_list_view_common_1.layout.makeMeasureSpec(remainingLength, measureSpec));
-                if (measureSpec === folding_list_view_common_1.layout.AT_MOST && _this.isUnsizedScrollableView(child)) {
-                    trace.write("Avoid using ListView or ScrollView with no explicit height set inside StackLayout. Doing so might result in poor user interface performance and poor user experience.", trace.categories.Layout, trace.messageType.warn);
-                }
-                measureWidth = Math.max(measureWidth, childSize.measuredWidth);
-                var viewHeight = childSize.measuredHeight;
-                measureHeight += viewHeight;
-                remainingLength = Math.max(0, remainingLength - viewHeight);
-            // }
-            // else {
-            //     childSize = folding_list_view_common_1.View.measureChild(_this, child, folding_list_view_common_1.layout.makeMeasureSpec(remainingLength, measureSpec), childMeasureSpec);
-            //     measureHeight = Math.max(measureHeight, childSize.measuredHeight);
-            //     var viewWidth = childSize.measuredWidth;
-            //     measureWidth += viewWidth;
-            //     remainingLength = Math.max(0, remainingLength - viewWidth);
-            // }
-        });
-        measureWidth += horizontalPaddingsAndMargins;
-        measureHeight += verticalPaddingsAndMargins;
-        measureWidth = Math.max(measureWidth, this.effectiveMinWidth);
-        measureHeight = Math.max(measureHeight, this.effectiveMinHeight);
-        this._totalLength = isVertical ? measureHeight : measureWidth;
-        var widthAndState = folding_list_view_common_1.View.resolveSizeAndState(measureWidth, width, widthMode, 0);
-        var heightAndState = folding_list_view_common_1.View.resolveSizeAndState(measureHeight, height, heightMode, 0);
-        this.setMeasuredDimension(widthAndState, heightAndState);
-    };
-    FoldingCellView.prototype.onLayout = function (left, top, right, bottom) {
-        _super.prototype.onLayout.call(this, left, top, right, bottom);
-        var insets = this.getSafeAreaInsets();
-        this.layoutVertical(left, top, right, bottom, insets);
+    //     // if (isVertical) {
+    //     //     var childWidth = (widthMode === folding_list_view_common_1.layout.UNSPECIFIED) ? 0 : width - horizontalPaddingsAndMargins;
+    //     //     childWidth = Math.max(0, childWidth);
+    //     //     childMeasureSpec = folding_list_view_common_1.layout.makeMeasureSpec(childWidth, widthMode);
+    //     // }
+    //     // else {
+    //     //     var childHeight = (heightMode === folding_list_view_common_1.layout.UNSPECIFIED) ? 0 : height - verticalPaddingsAndMargins;
+    //     //     childHeight = Math.max(0, childHeight);
+    //     //     childMeasureSpec = folding_list_view_common_1.layout.makeMeasureSpec(childHeight, heightMode);
+    //     // }
+    //     var childSize;
+    //     this.eachLayoutChild(function (child, last) {
+    //         // if (isVertical) {
+    //             childSize = folding_list_view_common_1.View.measureChild(_this, child, childMeasureSpec, folding_list_view_common_1.layout.makeMeasureSpec(remainingLength, measureSpec));
+    //             if (measureSpec === folding_list_view_common_1.layout.AT_MOST && _this.isUnsizedScrollableView(child)) {
+    //                 trace.write("Avoid using ListView or ScrollView with no explicit height set inside StackLayout. Doing so might result in poor user interface performance and poor user experience.", trace.categories.Layout, trace.messageType.warn);
+    //             }
+    //             measureWidth = Math.max(measureWidth, childSize.measuredWidth);
+    //             var viewHeight = childSize.measuredHeight;
+    //             measureHeight += viewHeight;
+    //             remainingLength = Math.max(0, remainingLength - viewHeight);
+    //         // }
+    //         // else {
+    //         //     childSize = folding_list_view_common_1.View.measureChild(_this, child, folding_list_view_common_1.layout.makeMeasureSpec(remainingLength, measureSpec), childMeasureSpec);
+    //         //     measureHeight = Math.max(measureHeight, childSize.measuredHeight);
+    //         //     var viewWidth = childSize.measuredWidth;
+    //         //     measureWidth += viewWidth;
+    //         //     remainingLength = Math.max(0, remainingLength - viewWidth);
+    //         // }
+    //     });
+    //     measureWidth += horizontalPaddingsAndMargins;
+    //     measureHeight += verticalPaddingsAndMargins;
+    //     measureWidth = Math.max(measureWidth, this.effectiveMinWidth);
+    //     measureHeight = Math.max(measureHeight, this.effectiveMinHeight);
+    //     this._totalLength = isVertical ? measureHeight : measureWidth;
+    //     var widthAndState = folding_list_view_common_1.View.resolveSizeAndState(measureWidth, width, widthMode, 0);
+    //     var heightAndState = folding_list_view_common_1.View.resolveSizeAndState(measureHeight, height, heightMode, 0);
+    //     this.setMeasuredDimension(widthAndState, heightAndState);
+    // };
+    // FoldingCellView.prototype.onLayout = function (left, top, right, bottom) {
+    //     _super.prototype.onLayout.call(this, left, top, right, bottom);
+    //     var insets = this.getSafeAreaInsets();
+    //     this.layoutVertical(left, top, right, bottom, insets);
 
-        // if (this.orientation === "vertical") {
-        //     this.layoutVertical(left, top, right, bottom, insets);
-        // }
-        // else {
-        //     this.layoutHorizontal(left, top, right, bottom, insets);
-        // }
-    };
-    FoldingCellView.prototype.layoutVertical = function (left, top, right, bottom, insets) {
-        var _this = this;
-        var paddingLeft = this.effectiveBorderLeftWidth + this.effectivePaddingLeft + insets.left;
-        var paddingTop = this.effectiveBorderTopWidth + this.effectivePaddingTop + insets.top;
-        var paddingRight = this.effectiveBorderRightWidth + this.effectivePaddingRight + insets.right;
-        var paddingBottom = this.effectiveBorderBottomWidth + this.effectivePaddingBottom + insets.bottom;
-        var childTop;
-        var childLeft = paddingLeft;
-        var childRight = right - left - paddingRight;
-        switch (this.verticalAlignment) {
-            case folding_list_view_common_1.VerticalAlignment.MIDDLE:
-                childTop = (bottom - top - this._totalLength) / 2 + paddingTop - paddingBottom;
-                break;
-            case folding_list_view_common_1.VerticalAlignment.BOTTOM:
-                childTop = bottom - top - this._totalLength + paddingTop - paddingBottom;
-                break;
-            case folding_list_view_common_1.VerticalAlignment.TOP:
-            case folding_list_view_common_1.VerticalAlignment.STRETCH:
-            default:
-                childTop = paddingTop;
-                break;
-        }
-        this.eachLayoutChild(function (child, last) {
-            var childHeight = child.getMeasuredHeight() + child.effectiveMarginTop + child.effectiveMarginBottom;
-            folding_list_view_common_1.View.layoutChild(_this, child, childLeft, childTop, childRight, childTop + childHeight);
-            childTop += childHeight;
-        });
-    };
-    // FoldingCellView.prototype.layoutHorizontal = function (left, top, right, bottom, insets) {
+    //     // if (this.orientation === "vertical") {
+    //     //     this.layoutVertical(left, top, right, bottom, insets);
+    //     // }
+    //     // else {
+    //     //     this.layoutHorizontal(left, top, right, bottom, insets);
+    //     // }
+    // };
+    // FoldingCellView.prototype.layoutVertical = function (left, top, right, bottom, insets) {
     //     var _this = this;
     //     var paddingLeft = this.effectiveBorderLeftWidth + this.effectivePaddingLeft + insets.left;
     //     var paddingTop = this.effectiveBorderTopWidth + this.effectivePaddingTop + insets.top;
     //     var paddingRight = this.effectiveBorderRightWidth + this.effectivePaddingRight + insets.right;
     //     var paddingBottom = this.effectiveBorderBottomWidth + this.effectivePaddingBottom + insets.bottom;
-    //     var childTop = paddingTop;
-    //     var childLeft;
-    //     var childBottom = bottom - top - paddingBottom;
-    //     switch (this.horizontalAlignment) {
-    //         case folding_list_view_common_1.HorizontalAlignment.CENTER:
-    //             childLeft = (right - left - this._totalLength) / 2 + paddingLeft - paddingRight;
+    //     var childTop;
+    //     var childLeft = paddingLeft;
+    //     var childRight = right - left - paddingRight;
+    //     switch (this.verticalAlignment) {
+    //         case folding_list_view_common_1.VerticalAlignment.MIDDLE:
+    //             childTop = (bottom - top - this._totalLength) / 2 + paddingTop - paddingBottom;
     //             break;
-    //         case folding_list_view_common_1.HorizontalAlignment.RIGHT:
-    //             childLeft = right - left - this._totalLength + paddingLeft - paddingRight;
+    //         case folding_list_view_common_1.VerticalAlignment.BOTTOM:
+    //             childTop = bottom - top - this._totalLength + paddingTop - paddingBottom;
     //             break;
-    //         case folding_list_view_common_1.HorizontalAlignment.LEFT:
-    //         case folding_list_view_common_1.HorizontalAlignment.STRETCH:
+    //         case folding_list_view_common_1.VerticalAlignment.TOP:
+    //         case folding_list_view_common_1.VerticalAlignment.STRETCH:
     //         default:
-    //             childLeft = paddingLeft;
+    //             childTop = paddingTop;
     //             break;
     //     }
     //     this.eachLayoutChild(function (child, last) {
-    //         var childWidth = child.getMeasuredWidth() + child.effectiveMarginLeft + child.effectiveMarginRight;
-    //         folding_list_view_common_1.View.layoutChild(_this, child, childLeft, childTop, childLeft + childWidth, childBottom);
-    //         childLeft += childWidth;
+    //         var childHeight = child.getMeasuredHeight() + child.effectiveMarginTop + child.effectiveMarginBottom;
+    //         folding_list_view_common_1.View.layoutChild(_this, child, childLeft, childTop, childRight, childTop + childHeight);
+    //         childTop += childHeight;
     //     });
     // };
-    FoldingCellView.prototype.isUnsizedScrollableView = function (child) {
-        if (child.height === "auto" && (child.ios instanceof UITableView || child.ios instanceof UIScrollView)) {
-            return true;
-        }
-        return false;
-    };
+    // // FoldingCellView.prototype.layoutHorizontal = function (left, top, right, bottom, insets) {
+    // //     var _this = this;
+    // //     var paddingLeft = this.effectiveBorderLeftWidth + this.effectivePaddingLeft + insets.left;
+    // //     var paddingTop = this.effectiveBorderTopWidth + this.effectivePaddingTop + insets.top;
+    // //     var paddingRight = this.effectiveBorderRightWidth + this.effectivePaddingRight + insets.right;
+    // //     var paddingBottom = this.effectiveBorderBottomWidth + this.effectivePaddingBottom + insets.bottom;
+    // //     var childTop = paddingTop;
+    // //     var childLeft;
+    // //     var childBottom = bottom - top - paddingBottom;
+    // //     switch (this.horizontalAlignment) {
+    // //         case folding_list_view_common_1.HorizontalAlignment.CENTER:
+    // //             childLeft = (right - left - this._totalLength) / 2 + paddingLeft - paddingRight;
+    // //             break;
+    // //         case folding_list_view_common_1.HorizontalAlignment.RIGHT:
+    // //             childLeft = right - left - this._totalLength + paddingLeft - paddingRight;
+    // //             break;
+    // //         case folding_list_view_common_1.HorizontalAlignment.LEFT:
+    // //         case folding_list_view_common_1.HorizontalAlignment.STRETCH:
+    // //         default:
+    // //             childLeft = paddingLeft;
+    // //             break;
+    // //     }
+    // //     this.eachLayoutChild(function (child, last) {
+    // //         var childWidth = child.getMeasuredWidth() + child.effectiveMarginLeft + child.effectiveMarginRight;
+    // //         folding_list_view_common_1.View.layoutChild(_this, child, childLeft, childTop, childLeft + childWidth, childBottom);
+    // //         childLeft += childWidth;
+    // //     });
+    // // };
+    // FoldingCellView.prototype.isUnsizedScrollableView = function (child) {
+    //     if (child.height === "auto" && (child.ios instanceof UITableView || child.ios instanceof UIScrollView)) {
+    //         return true;
+    //     }
+    //     return false;
+    // };
     return FoldingCellView;
 }(folding_list_view_common_1.FoldingCellCommon));
 exports.FoldingCell = FoldingCellView;
