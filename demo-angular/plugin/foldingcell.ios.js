@@ -102,6 +102,7 @@ var FoldingCellExtended = (function (_super) {
         var top = NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("V:|-" + topConstraintValue + "-[layer]", 0, null, { layer: foregroundView });
         NSLayoutConstraint.activateConstraints(top);
         this.foregroundView = foregroundView;
+        console.log('FORGROUND:::',this.foregroundView )
         this.foregroundViewTop = top.objectAtIndex(0);
     };
     FoldingCellExtended.prototype._initContainerView = function (height) {
@@ -132,6 +133,8 @@ var FoldingCellExtended = (function (_super) {
         var top = NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("V:|-" + topConstraintValue + "-[layer]", 0, null, { layer: containerView });
         NSLayoutConstraint.activateConstraints(top);
         this.containerViewTop = top.objectAtIndex(0);
+        console.log('Container:::',this.containerView )
+
         containerView.layoutIfNeeded();
     };
     return FoldingCellExtended;
@@ -160,12 +163,13 @@ var FoldingCellView = (function (_super) {
     __extends(FoldingCellView, _super);
     function FoldingCellView() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this._totalLength = 0;
+        // _this._totalLength = 0;
         return _this;
     }
 
     FoldingCellView.prototype.createNativeView = function () {
-        var fcv = FoldingCellExtended.new().init(UITableViewCellStyleDefault,'Reuse');
+        var fcv = FoldingCellExtended.new();
+        console.log('FCV:::', fcv)
         fcv._createForegroundView(75);
         fcv._createContainerView(75);
         // this.backViewColor = parent.backViewColor.ios;
