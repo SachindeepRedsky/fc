@@ -95,7 +95,7 @@ var FoldingCellExtended = (function (_super) {
         var topConstraintValue = view_1.layout.toDeviceIndependentPixels(10);
         var foregroundView = RotatedView.alloc().initWithFrame(CGRectZero);
         foregroundView.translatesAutoresizingMaskIntoConstraints = false;
-        foregroundView.backgroundColor = UIColor.brown
+        foregroundView.backgroundColor = UIColor.systemGray
         // foregroundView.addSubview(this.foregroundViewTNS.nativeViewProtected);
         this.contentView.addSubview(foregroundView);
         NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("V:[layer(==" + (view_1.layout.toDeviceIndependentPixels(height) - topConstraintValue) + ")]", 0, null, { layer: foregroundView }));
@@ -126,7 +126,7 @@ var FoldingCellExtended = (function (_super) {
         var topConstraintValue = view_1.layout.toDeviceIndependentPixels(20);
         var containerView = UIView.alloc().initWithFrame(CGRectZero);
         containerView.translatesAutoresizingMaskIntoConstraints = false;
-        containerView.backgroundColor = UIColor.green
+        containerView.backgroundColor = UIColor.systemBlue
 
         // containerView.addSubview(this.containerViewTNS.nativeViewProtected);
         this.contentView.addSubview(containerView);
