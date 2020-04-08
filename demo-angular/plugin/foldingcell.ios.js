@@ -147,6 +147,137 @@ var FoldingCellExtended = (function (_super) {
 
 
 
+var FoldingCellExtended = (function (_super) {
+    __extends(FoldingCellExtended, _super);
+    function FoldingCellExtended() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    // Object.defineProperty(FoldingCellExtended.prototype, "foregroundViewTNS", {
+    //     get: function () {
+    //         return this.foregroundViewWeakRef ? this.foregroundViewWeakRef.get() : null;
+    //     },
+    //     enumerable: true,
+    //     configurable: true
+    // });
+    // Object.defineProperty(FoldingCellExtended.prototype, "containerViewTNS", {
+    //     get: function () {
+    //         return this.containerViewWeakRef ? this.containerViewWeakRef.get() : null;
+    //     },
+    //     enumerable: true,
+    //     configurable: true
+    // });
+    // FoldingListViewCell.prototype.willMoveToSuperview = function (newSuperview) {
+    //     var parent = (this.foregroundViewTNS ? this.foregroundViewTNS.parent : null);
+    //     if (parent && !newSuperview) {
+    //         parent._removeContainer(this);
+    //     }
+    // };
+    FoldingCellExtended.prototype.resetNativeViews = function (cellHeight) {
+        // var parent = (this.foregroundViewTNS ? this.foregroundViewTNS.parent : null);
+        // for (var loop = this.contentView.subviews.count - 1; loop >= 0; loop--) {
+        //     this.contentView.subviews.objectAtIndex(loop).removeFromSuperview();
+        // }
+        this._createForegroundView(75);
+        this._createContainerView(75);
+        // this.backViewColor = parent.backViewColor.ios;
+        this.commonInit();
+    };
+    FoldingCellExtended.prototype.resetContainerViewHeightContraint = function (newHeight) {
+        var topConstraintValue = view_1.layout.toDeviceIndependentPixels(75);
+        if (this._containerViewHeightConstraints) {
+            NSLayoutConstraint.deactivateConstraints(this._containerViewHeightConstraints);
+        }
+        this._containerViewHeightConstraints = NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("V:[layer(==" + (view_1.layout.toDeviceIndependentPixels(newHeight) - topConstraintValue) + ")]", 0, null, { layer: this.containerView });
+        NSLayoutConstraint.activateConstraints(this._containerViewHeightConstraints);
+    };
+    FoldingCellExtended.prototype.animationDurationType = function (itemIndex, type) {
+        var parent = (this.foregroundViewTNS ? this.foregroundViewTNS.parent : null);
+        return parent.foldAnimationDuration / 1000;
+    };
+    FoldingCellExtended.prototype._bindContainerView = function (index, dataItem) {
+        var containerView = this.containerViewTNS;
+        var parent = containerView.parent;
+        var width = view_1.layout.getMeasureSpecSize(parent.widthMeasureSpec);
+        containerView.bindingContext = dataItem;
+        var size = parent._measureConstraintedChild(containerView, infinity);
+        var cellHeight = parent.getHeight(index);
+        cellHeight.container = size.measuredHeight + containerView._constraintTop;
+        parent.setHeight(index, cellHeight);
+        if (containerView && containerView.isLayoutRequired) {
+            parent._layoutConstraintedView(containerView, width, cellHeight.container);
+        }
+        this.resetContainerViewHeightContraint(cellHeight.container);
+    };
+    FoldingCellExtended.prototype._initForegroundView = function (height) {
+        var topConstraintValue = view_1.layout.toDeviceIndependentPixels(this.foregroundViewTNS._constraintTop);
+        var foregroundView = RotatedView.alloc().initWithFrame(CGRectZero);
+        foregroundView.translatesAutoresizingMaskIntoConstraints = false;
+        foregroundView.addSubview(this.foregroundViewTNS.nativeViewProtected);
+        this.contentView.addSubview(foregroundView);
+        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("V:[layer(==" + (view_1.layout.toDeviceIndependentPixels(height) - topConstraintValue) + ")]", 0, null, { layer: foregroundView }));
+        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("H:|-" + view_1.layout.toDeviceIndependentPixels(this.foregroundViewTNS._constraintLeft) + "-[layer]-" + view_1.layout.toDeviceIndependentPixels(this.foregroundViewTNS._constraintRight) + "-|", 0, null, { layer: foregroundView }));
+        var top = NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("V:|-" + topConstraintValue + "-[layer]", 0, null, { layer: foregroundView });
+        NSLayoutConstraint.activateConstraints(top);
+        this.foregroundView = foregroundView;
+        this.foregroundViewTop = top.objectAtIndex(0);
+    };
+
+    FoldingCellExtended.prototype._createForegroundView = function (height) {
+        height=75;
+        var topConstraintValue = view_1.layout.toDeviceIndependentPixels(10);
+        var foregroundView = RotatedView.alloc().initWithFrame(CGRectZero);
+        foregroundView.translatesAutoresizingMaskIntoConstraints = false;
+        foregroundView.backgroundColor = UIColor.systemGray
+        // foregroundView.addSubview(this.foregroundViewTNS.nativeViewProtected);
+        this.contentView.addSubview(foregroundView);
+        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("V:[layer(==" + (view_1.layout.toDeviceIndependentPixels(height) - topConstraintValue) + ")]", 0, null, { layer: foregroundView }));
+        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("H:|-" + view_1.layout.toDeviceIndependentPixels(20) + "-[layer]-" + view_1.layout.toDeviceIndependentPixels(20) + "-|", 0, null, { layer: foregroundView }));
+        var top = NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("V:|-" + topConstraintValue + "-[layer]", 0, null, { layer: foregroundView });
+        NSLayoutConstraint.activateConstraints(top);
+        this.foregroundView = foregroundView;
+        console.log('FORGROUND:::',this.foregroundView )
+        this.foregroundViewTop = top.objectAtIndex(0);
+    };
+    FoldingCellExtended.prototype._initContainerView = function (height) {
+        var topConstraintValue = view_1.layout.toDeviceIndependentPixels(this.containerViewTNS._constraintTop);
+        var containerView = UIView.alloc().initWithFrame(CGRectZero);
+        containerView.translatesAutoresizingMaskIntoConstraints = false;
+        containerView.addSubview(this.containerViewTNS.nativeViewProtected);
+        this.contentView.addSubview(containerView);
+        this.containerView = containerView;
+        this.resetContainerViewHeightContraint(height);
+        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("H:|-" + view_1.layout.toDeviceIndependentPixels(this.containerViewTNS._constraintLeft) + "-[layer]-" + view_1.layout.toDeviceIndependentPixels(this.containerViewTNS._constraintRight) + "-|", 0, null, { layer: containerView }));
+        var top = NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("V:|-" + topConstraintValue + "-[layer]", 0, null, { layer: containerView });
+        NSLayoutConstraint.activateConstraints(top);
+        this.containerViewTop = top.objectAtIndex(0);
+        containerView.layoutIfNeeded();
+    };
+
+    FoldingCellExtended.prototype._createContainerView = function (height) {
+        height=75
+        var topConstraintValue = view_1.layout.toDeviceIndependentPixels(20);
+        var containerView = UIView.alloc().initWithFrame(CGRectZero);
+        containerView.translatesAutoresizingMaskIntoConstraints = false;
+        containerView.backgroundColor = UIColor.systemBlue
+
+        // containerView.addSubview(this.containerViewTNS.nativeViewProtected);
+        this.contentView.addSubview(containerView);
+        this.containerView = containerView;
+        this.resetContainerViewHeightContraint(height);
+        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("H:|-" + view_1.layout.toDeviceIndependentPixels(10) + "-[layer]-" + view_1.layout.toDeviceIndependentPixels(10) + "-|", 0, null, { layer: containerView }));
+        var top = NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("V:|-" + topConstraintValue + "-[layer]", 0, null, { layer: containerView });
+        NSLayoutConstraint.activateConstraints(top);
+        this.containerViewTop = top.objectAtIndex(0);
+        console.log('Container:::',this.containerView )
+
+        containerView.layoutIfNeeded();
+    };
+    return FoldingCellExtended;
+}(FoldingCell));
+
+
+
+
 // var FoldingCellCommon = (function (_super) {
 //     __extends(FoldingCellCommon, _super);
 //     function FoldingCellCommon() {
@@ -160,13 +291,113 @@ var FoldingCellExtended = (function (_super) {
 // exports.FoldingCellCommon = FoldingCellCommon;
 
 
+// var FoldingCellDelegate = (function (_super) {
+//     __extends(FoldingCellDelegate, _super);
+//     function FoldingCellDelegate() {
+//         return _super !== null && _super.apply(this, arguments) || this;
+//     }
+//     FoldingCellDelegate_1 = FoldingCellDelegate;
+//     FoldingCellDelegate.initWithOwner = function (owner) {
+//         var delegate = FoldingCellDelegate_1.new();
+//         delegate._owner = owner;
+//         return delegate;
+//     };
+//     FoldingCellDelegate.prototype.tableViewHeightForRowAtIndexPath = function (tableView, indexPath) {
+//         var owner = this._owner.get();
+//         var cellHeight = owner.getHeight(indexPath.row);
+//         if (!cellHeight) {
+//             return view_1.layout.toDeviceIndependentPixels(owner._effectiveFoldedRowHeight);
+//         }
+//         return view_1.layout.toDeviceIndependentPixels(owner._getIsCellExpandedIn(indexPath.row) ? cellHeight.container : cellHeight.foreground);
+//     };
+//     FoldingCellDelegate.prototype.tableViewDidSelectRowAtIndexPath = function (tableView, indexPath) {
+//         var _this = this;
+//         var cell = tableView.cellForRowAtIndexPath(indexPath);
+//         var owner = this._owner.get();
+//         if (cell.isAnimating()) {
+//             return;
+//         }
+//         var isExpandedIn = !owner._getIsCellExpandedIn(indexPath.row);
+//         var index = indexPath.row;
+//         if (isExpandedIn && owner.detailDataLoader) {
+//             owner._getDetailDataLoaderPromise(index)
+//                 .then(function (value) {
+//                 cell._bindContainerView(index, value);
+//                 owner._setCachedDetailData(index, value);
+//                 setTimeout(function () { _this._performCellUnfold(cell, index, isExpandedIn); }, 1);
+//             })
+//                 .catch(function (e) { console.error("ERROR LOADING DETAILS:", e); });
+//         }
+//         else {
+//             this._performCellUnfold(cell, index, isExpandedIn);
+//         }
+//         if (!isExpandedIn) {
+//             owner.invalidateChachedDetailData(index);
+//         }
+//     };
+//     FoldingCellDelegate.prototype.tableViewWillDisplayCellForRowAtIndexPath = function (tableView, cell, indexPath) {
+//         var foldingCell = cell;
+//         var owner = this._owner.get();
+//         var isExpandedIn = owner._getIsCellExpandedIn(indexPath.row);
+//         // if (owner && (indexPath.row === owner.items.length - 1)) {
+//         //     owner.notify({
+//         //         eventName: folding_list_view_common_1.FoldingListViewBase.loadMoreItemsEvent,
+//         //         object: owner,
+//         //     });
+//         // }
+//         foldingCell.unfoldAnimatedCompletion(isExpandedIn, false, null);
+//     };
+//     FoldingCellDelegate.prototype._performCellUnfold = function (cell, index, isExpandedIn) {
+//         var owner = this._owner.get();
+//         if (isExpandedIn) {
+//             var expandedIndex_1 = owner._cellExpanded.findIndex(function (value) { return value; });
+//             var expandedCell_1;
+//             owner._map.forEach(function (value, key) {
+//                 if (value.index === expandedIndex_1) {
+//                     expandedCell_1 = key;
+//                 }
+//             });
+//             if (!expandedCell_1) {
+//                 owner._setIsCellExpandedIn(expandedIndex_1, false);
+//             }
+//             else {
+//                 this._performCellUnfold(expandedCell_1, expandedIndex_1, false);
+//             }
+//         }
+//         owner._setIsCellExpandedIn(index, isExpandedIn);
+//         cell.unfoldAnimatedCompletion(isExpandedIn, true, null);
+//         var duration = (owner.foldAnimationDuration / 1000);
+//         if (isExpandedIn) {
+//             duration /= 2;
+//         }
+//         UIView.animateWithDurationDelayOptionsAnimationsCompletion(duration, 0, 131072, function () {
+//             owner.ios.beginUpdates();
+//             owner.ios.endUpdates();
+//         }, null);
+//     };
+//     FoldingCellDelegate = FoldingCellDelegate_1 = __decorate([
+//         ObjCClass(UITableViewDelegate)
+//     ], FoldingCellDelegate);
+//     return FoldingCellDelegate;
+//     var FoldingCellDelegate_1;
+// }(NSObject));
+
 
 
 var FoldingCellView = (function (_super) {
     __extends(FoldingCellView, _super);
     function FoldingCellView() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        // _this._totalLength = 0;
+
+        // _this._ios.registerClassForCellReuseIdentifier(FoldingListViewCell.class(), _this._defaultForegroundItemTemplate.key);
+        _this._ios.separatorColor = utils.ios.getter(UIColor, UIColor.clearColor);
+        _this._ios.rowHeight = UITableViewAutomaticDimension;
+        _this._ios.dataSource = _this._dataSource = FoldingListViewDataSource.initWithOwner(new WeakRef(_this));
+        _this._delegate = FoldingCellDelegate.initWithOwner(new WeakRef(_this));
+        _this._heights = new Array();
+        _this._map = new Map();
+        _this._setNativeClipToBounds();     
+           // _this._totalLength = 0;
         return _this;
     }
 
@@ -181,6 +412,10 @@ var FoldingCellView = (function (_super) {
         // imageView.contentMode = 1;
         // imageView.userInteractionEnabled = true;
         return fcv;
+    };
+
+    FoldingListView.prototype._setNativeClipToBounds = function () {
+        this._ios.clipsToBounds = true;
     };
     // FoldingCellView.prototype.initNativeView = function () {
     //     // this._createForegroundView(75);
@@ -264,11 +499,11 @@ var FoldingCellView = (function (_super) {
 
         // if (this.orientation === "vertical") {
         //     this.layoutVertical(left, top, right, bottom, insets);
-        // }
+        // }FoldingListViewDelegate
         // else {
         //     this.layoutHorizontal(left, top, right, bottom, insets);
         // }
-    };
+    };_getIsCellExpandedIn
     FoldingCellView.prototype.layoutVertical = function (left, top, right, bottom, insets) {
         var _this = this;
         var paddingLeft = this.effectiveBorderLeftWidth + this.effectivePaddingLeft + insets.left;
@@ -331,24 +566,32 @@ var FoldingCellView = (function (_super) {
         }
         return false;
     };
+    FoldingCellView.prototype.addChild = function (child) {
+        _super.prototype.addChild.call(this, child);
+        console.log('Added Child',child);
+    };
+    FoldingCellView.prototype.insertChild = function (child, atIndex) {
+        _super.prototype.addChild.call(this, child, atIndex);
+        console.log('Inserted Child',child);
+    };
     return FoldingCellView;
 }(folding_list_view_common_1.FoldingCellCommon));
 exports.FoldingCell = FoldingCellView;
 
 
 
-var FoldingListViewDelegate = (function (_super) {
-    __extends(FoldingListViewDelegate, _super);
-    function FoldingListViewDelegate() {
+var FoldingCellDelegate = (function (_super) {
+    __extends(FoldingCellDelegate, _super);
+    function FoldingCellDelegate() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    FoldingListViewDelegate_1 = FoldingListViewDelegate;
-    FoldingListViewDelegate.initWithOwner = function (owner) {
-        var delegate = FoldingListViewDelegate_1.new();
+    FoldingCellDelegate_1 = FoldingCellDelegate;
+    FoldingCellDelegate.initWithOwner = function (owner) {
+        var delegate = FoldingCellDelegate_1.new();
         delegate._owner = owner;
         return delegate;
     };
-    FoldingListViewDelegate.prototype.tableViewHeightForRowAtIndexPath = function (tableView, indexPath) {
+    FoldingCellDelegate.prototype.tableViewHeightForRowAtIndexPath = function (tableView, indexPath) {
         var owner = this._owner.get();
         var cellHeight = owner.getHeight(indexPath.row);
         if (!cellHeight) {
@@ -356,7 +599,7 @@ var FoldingListViewDelegate = (function (_super) {
         }
         return view_1.layout.toDeviceIndependentPixels(owner._getIsCellExpandedIn(indexPath.row) ? cellHeight.container : cellHeight.foreground);
     };
-    FoldingListViewDelegate.prototype.tableViewDidSelectRowAtIndexPath = function (tableView, indexPath) {
+    FoldingCellDelegate.prototype.tableViewDidSelectRowAtIndexPath = function (tableView, indexPath) {
         var _this = this;
         var cell = tableView.cellForRowAtIndexPath(indexPath);
         var owner = this._owner.get();
@@ -381,21 +624,21 @@ var FoldingListViewDelegate = (function (_super) {
             owner.invalidateChachedDetailData(index);
         }
     };
-    FoldingListViewDelegate.prototype.tableViewWillDisplayCellForRowAtIndexPath = function (tableView, cell, indexPath) {
+    FoldingCellDelegate.prototype.tableViewWillDisplayCellForRowAtIndexPath = function (tableView, cell, indexPath) {
         var foldingCell = cell;
         var owner = this._owner.get();
         var isExpandedIn = owner._getIsCellExpandedIn(indexPath.row);
-        if (owner && (indexPath.row === owner.items.length - 1)) {
-            owner.notify({
-                eventName: folding_list_view_common_1.FoldingListViewBase.loadMoreItemsEvent,
-                object: owner,
-            });
-        }
+        // if (owner && (indexPath.row === owner.items.length - 1)) {
+        //     owner.notify({
+        //         eventName: folding_list_view_common_1.FoldingListViewBase.loadMoreItemsEvent,
+        //         object: owner,
+        //     });
+        // }
         foldingCell.unfoldAnimatedCompletion(isExpandedIn, false, null);
     };
-    FoldingListViewDelegate.prototype._performCellUnfold = function (cell, index, isExpandedIn) {
+    FoldingCellDelegate.prototype._performCellUnfold = function (cell, index, isExpandedIn) {
         var owner = this._owner.get();
-        if (owner.toggleMode && isExpandedIn) {
+        if ( isExpandedIn) {
             var expandedIndex_1 = owner._cellExpanded.findIndex(function (value) { return value; });
             var expandedCell_1;
             owner._map.forEach(function (value, key) {
@@ -412,7 +655,7 @@ var FoldingListViewDelegate = (function (_super) {
         }
         owner._setIsCellExpandedIn(index, isExpandedIn);
         cell.unfoldAnimatedCompletion(isExpandedIn, true, null);
-        var duration = owner.foldsCount * (owner.foldAnimationDuration / 1000);
+        var duration =(owner.foldAnimationDuration / 1000);
         if (isExpandedIn) {
             duration /= 2;
         }
@@ -421,9 +664,9 @@ var FoldingListViewDelegate = (function (_super) {
             owner.ios.endUpdates();
         }, null);
     };
-    FoldingListViewDelegate = FoldingListViewDelegate_1 = __decorate([
+    FoldingCellDelegate = FoldingCellDelegate_1 = __decorate([
         ObjCClass(UITableViewDelegate)
-    ], FoldingListViewDelegate);
-    return FoldingListViewDelegate;
-    var FoldingListViewDelegate_1;
+    ], FoldingCellDelegate);
+    return FoldingCellDelegate;
+    var FoldingCellDelegate_1;
 }(NSObject));
