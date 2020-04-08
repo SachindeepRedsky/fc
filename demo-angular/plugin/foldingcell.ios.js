@@ -15,133 +15,133 @@ var utils = require("utils/utils");
 var folding_list_view_common_1 = require("./foldingcell.common");
 __export(require("./foldingcell.common"));
 
-var FoldingCellExtended = (function (_super) {
-    __extends(FoldingCellExtended, _super);
-    function FoldingCellExtended() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    // Object.defineProperty(FoldingCellExtended.prototype, "foregroundViewTNS", {
-    //     get: function () {
-    //         return this.foregroundViewWeakRef ? this.foregroundViewWeakRef.get() : null;
-    //     },
-    //     enumerable: true,
-    //     configurable: true
-    // });
-    // Object.defineProperty(FoldingCellExtended.prototype, "containerViewTNS", {
-    //     get: function () {
-    //         return this.containerViewWeakRef ? this.containerViewWeakRef.get() : null;
-    //     },
-    //     enumerable: true,
-    //     configurable: true
-    // });
-    // FoldingListViewCell.prototype.willMoveToSuperview = function (newSuperview) {
-    //     var parent = (this.foregroundViewTNS ? this.foregroundViewTNS.parent : null);
-    //     if (parent && !newSuperview) {
-    //         parent._removeContainer(this);
-    //     }
-    // };
-    FoldingCellExtended.prototype.resetNativeViews = function (cellHeight) {
-        // var parent = (this.foregroundViewTNS ? this.foregroundViewTNS.parent : null);
-        // for (var loop = this.contentView.subviews.count - 1; loop >= 0; loop--) {
-        //     this.contentView.subviews.objectAtIndex(loop).removeFromSuperview();
-        // }
-        this._createForegroundView(75);
-        this._createContainerView(75);
-        // this.backViewColor = parent.backViewColor.ios;
-        this.commonInit();
-    };
-    FoldingCellExtended.prototype.resetContainerViewHeightContraint = function (newHeight) {
-        var topConstraintValue = view_1.layout.toDeviceIndependentPixels(75);
-        if (this._containerViewHeightConstraints) {
-            NSLayoutConstraint.deactivateConstraints(this._containerViewHeightConstraints);
-        }
-        this._containerViewHeightConstraints = NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("V:[layer(==" + (view_1.layout.toDeviceIndependentPixels(newHeight) - topConstraintValue) + ")]", 0, null, { layer: this.containerView });
-        NSLayoutConstraint.activateConstraints(this._containerViewHeightConstraints);
-    };
-    FoldingCellExtended.prototype.animationDurationType = function (itemIndex, type) {
-        var parent = (this.foregroundViewTNS ? this.foregroundViewTNS.parent : null);
-        return parent.foldAnimationDuration / 1000;
-    };
-    FoldingCellExtended.prototype._bindContainerView = function (index, dataItem) {
-        var containerView = this.containerViewTNS;
-        var parent = containerView.parent;
-        var width = view_1.layout.getMeasureSpecSize(parent.widthMeasureSpec);
-        containerView.bindingContext = dataItem;
-        var size = parent._measureConstraintedChild(containerView, infinity);
-        var cellHeight = parent.getHeight(index);
-        cellHeight.container = size.measuredHeight + containerView._constraintTop;
-        parent.setHeight(index, cellHeight);
-        if (containerView && containerView.isLayoutRequired) {
-            parent._layoutConstraintedView(containerView, width, cellHeight.container);
-        }
-        this.resetContainerViewHeightContraint(cellHeight.container);
-    };
-    FoldingCellExtended.prototype._initForegroundView = function (height) {
-        var topConstraintValue = view_1.layout.toDeviceIndependentPixels(this.foregroundViewTNS._constraintTop);
-        var foregroundView = RotatedView.alloc().initWithFrame(CGRectZero);
-        foregroundView.translatesAutoresizingMaskIntoConstraints = false;
-        foregroundView.addSubview(this.foregroundViewTNS.nativeViewProtected);
-        this.contentView.addSubview(foregroundView);
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("V:[layer(==" + (view_1.layout.toDeviceIndependentPixels(height) - topConstraintValue) + ")]", 0, null, { layer: foregroundView }));
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("H:|-" + view_1.layout.toDeviceIndependentPixels(this.foregroundViewTNS._constraintLeft) + "-[layer]-" + view_1.layout.toDeviceIndependentPixels(this.foregroundViewTNS._constraintRight) + "-|", 0, null, { layer: foregroundView }));
-        var top = NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("V:|-" + topConstraintValue + "-[layer]", 0, null, { layer: foregroundView });
-        NSLayoutConstraint.activateConstraints(top);
-        this.foregroundView = foregroundView;
-        this.foregroundViewTop = top.objectAtIndex(0);
-    };
+// var FoldingCellExtended = (function (_super) {
+//     __extends(FoldingCellExtended, _super);
+//     function FoldingCellExtended() {
+//         return _super !== null && _super.apply(this, arguments) || this;
+//     }
+//     // Object.defineProperty(FoldingCellExtended.prototype, "foregroundViewTNS", {
+//     //     get: function () {
+//     //         return this.foregroundViewWeakRef ? this.foregroundViewWeakRef.get() : null;
+//     //     },
+//     //     enumerable: true,
+//     //     configurable: true
+//     // });
+//     // Object.defineProperty(FoldingCellExtended.prototype, "containerViewTNS", {
+//     //     get: function () {
+//     //         return this.containerViewWeakRef ? this.containerViewWeakRef.get() : null;
+//     //     },
+//     //     enumerable: true,
+//     //     configurable: true
+//     // });
+//     // FoldingListViewCell.prototype.willMoveToSuperview = function (newSuperview) {
+//     //     var parent = (this.foregroundViewTNS ? this.foregroundViewTNS.parent : null);
+//     //     if (parent && !newSuperview) {
+//     //         parent._removeContainer(this);
+//     //     }
+//     // };
+//     FoldingCellExtended.prototype.resetNativeViews = function (cellHeight) {
+//         // var parent = (this.foregroundViewTNS ? this.foregroundViewTNS.parent : null);
+//         // for (var loop = this.contentView.subviews.count - 1; loop >= 0; loop--) {
+//         //     this.contentView.subviews.objectAtIndex(loop).removeFromSuperview();
+//         // }
+//         this._createForegroundView(75);
+//         this._createContainerView(75);
+//         // this.backViewColor = parent.backViewColor.ios;
+//         this.commonInit();
+//     };
+//     FoldingCellExtended.prototype.resetContainerViewHeightContraint = function (newHeight) {
+//         var topConstraintValue = view_1.layout.toDeviceIndependentPixels(75);
+//         if (this._containerViewHeightConstraints) {
+//             NSLayoutConstraint.deactivateConstraints(this._containerViewHeightConstraints);
+//         }
+//         this._containerViewHeightConstraints = NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("V:[layer(==" + (view_1.layout.toDeviceIndependentPixels(newHeight) - topConstraintValue) + ")]", 0, null, { layer: this.containerView });
+//         NSLayoutConstraint.activateConstraints(this._containerViewHeightConstraints);
+//     };
+//     FoldingCellExtended.prototype.animationDurationType = function (itemIndex, type) {
+//         var parent = (this.foregroundViewTNS ? this.foregroundViewTNS.parent : null);
+//         return parent.foldAnimationDuration / 1000;
+//     };
+//     FoldingCellExtended.prototype._bindContainerView = function (index, dataItem) {
+//         var containerView = this.containerViewTNS;
+//         var parent = containerView.parent;
+//         var width = view_1.layout.getMeasureSpecSize(parent.widthMeasureSpec);
+//         containerView.bindingContext = dataItem;
+//         var size = parent._measureConstraintedChild(containerView, infinity);
+//         var cellHeight = parent.getHeight(index);
+//         cellHeight.container = size.measuredHeight + containerView._constraintTop;
+//         parent.setHeight(index, cellHeight);
+//         if (containerView && containerView.isLayoutRequired) {
+//             parent._layoutConstraintedView(containerView, width, cellHeight.container);
+//         }
+//         this.resetContainerViewHeightContraint(cellHeight.container);
+//     };
+//     FoldingCellExtended.prototype._initForegroundView = function (height) {
+//         var topConstraintValue = view_1.layout.toDeviceIndependentPixels(this.foregroundViewTNS._constraintTop);
+//         var foregroundView = RotatedView.alloc().initWithFrame(CGRectZero);
+//         foregroundView.translatesAutoresizingMaskIntoConstraints = false;
+//         foregroundView.addSubview(this.foregroundViewTNS.nativeViewProtected);
+//         this.contentView.addSubview(foregroundView);
+//         NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("V:[layer(==" + (view_1.layout.toDeviceIndependentPixels(height) - topConstraintValue) + ")]", 0, null, { layer: foregroundView }));
+//         NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("H:|-" + view_1.layout.toDeviceIndependentPixels(this.foregroundViewTNS._constraintLeft) + "-[layer]-" + view_1.layout.toDeviceIndependentPixels(this.foregroundViewTNS._constraintRight) + "-|", 0, null, { layer: foregroundView }));
+//         var top = NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("V:|-" + topConstraintValue + "-[layer]", 0, null, { layer: foregroundView });
+//         NSLayoutConstraint.activateConstraints(top);
+//         this.foregroundView = foregroundView;
+//         this.foregroundViewTop = top.objectAtIndex(0);
+//     };
 
-    FoldingCellExtended.prototype._createForegroundView = function (height) {
-        height=75;
-        var topConstraintValue = view_1.layout.toDeviceIndependentPixels(10);
-        var foregroundView = RotatedView.alloc().initWithFrame(CGRectZero);
-        foregroundView.translatesAutoresizingMaskIntoConstraints = false;
-        foregroundView.backgroundColor = UIColor.systemGray
-        // foregroundView.addSubview(this.foregroundViewTNS.nativeViewProtected);
-        this.contentView.addSubview(foregroundView);
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("V:[layer(==" + (view_1.layout.toDeviceIndependentPixels(height) - topConstraintValue) + ")]", 0, null, { layer: foregroundView }));
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("H:|-" + view_1.layout.toDeviceIndependentPixels(20) + "-[layer]-" + view_1.layout.toDeviceIndependentPixels(20) + "-|", 0, null, { layer: foregroundView }));
-        var top = NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("V:|-" + topConstraintValue + "-[layer]", 0, null, { layer: foregroundView });
-        NSLayoutConstraint.activateConstraints(top);
-        this.foregroundView = foregroundView;
-        console.log('FORGROUND:::',this.foregroundView )
-        this.foregroundViewTop = top.objectAtIndex(0);
-    };
-    FoldingCellExtended.prototype._initContainerView = function (height) {
-        var topConstraintValue = view_1.layout.toDeviceIndependentPixels(this.containerViewTNS._constraintTop);
-        var containerView = UIView.alloc().initWithFrame(CGRectZero);
-        containerView.translatesAutoresizingMaskIntoConstraints = false;
-        containerView.addSubview(this.containerViewTNS.nativeViewProtected);
-        this.contentView.addSubview(containerView);
-        this.containerView = containerView;
-        this.resetContainerViewHeightContraint(height);
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("H:|-" + view_1.layout.toDeviceIndependentPixels(this.containerViewTNS._constraintLeft) + "-[layer]-" + view_1.layout.toDeviceIndependentPixels(this.containerViewTNS._constraintRight) + "-|", 0, null, { layer: containerView }));
-        var top = NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("V:|-" + topConstraintValue + "-[layer]", 0, null, { layer: containerView });
-        NSLayoutConstraint.activateConstraints(top);
-        this.containerViewTop = top.objectAtIndex(0);
-        containerView.layoutIfNeeded();
-    };
+//     FoldingCellExtended.prototype._createForegroundView = function (height) {
+//         height=75;
+//         var topConstraintValue = view_1.layout.toDeviceIndependentPixels(10);
+//         var foregroundView = RotatedView.alloc().initWithFrame(CGRectZero);
+//         foregroundView.translatesAutoresizingMaskIntoConstraints = false;
+//         foregroundView.backgroundColor = UIColor.systemGray
+//         // foregroundView.addSubview(this.foregroundViewTNS.nativeViewProtected);
+//         this.contentView.addSubview(foregroundView);
+//         NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("V:[layer(==" + (view_1.layout.toDeviceIndependentPixels(height) - topConstraintValue) + ")]", 0, null, { layer: foregroundView }));
+//         NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("H:|-" + view_1.layout.toDeviceIndependentPixels(20) + "-[layer]-" + view_1.layout.toDeviceIndependentPixels(20) + "-|", 0, null, { layer: foregroundView }));
+//         var top = NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("V:|-" + topConstraintValue + "-[layer]", 0, null, { layer: foregroundView });
+//         NSLayoutConstraint.activateConstraints(top);
+//         this.foregroundView = foregroundView;
+//         console.log('FORGROUND:::',this.foregroundView )
+//         this.foregroundViewTop = top.objectAtIndex(0);
+//     };
+//     FoldingCellExtended.prototype._initContainerView = function (height) {
+//         var topConstraintValue = view_1.layout.toDeviceIndependentPixels(this.containerViewTNS._constraintTop);
+//         var containerView = UIView.alloc().initWithFrame(CGRectZero);
+//         containerView.translatesAutoresizingMaskIntoConstraints = false;
+//         containerView.addSubview(this.containerViewTNS.nativeViewProtected);
+//         this.contentView.addSubview(containerView);
+//         this.containerView = containerView;
+//         this.resetContainerViewHeightContraint(height);
+//         NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("H:|-" + view_1.layout.toDeviceIndependentPixels(this.containerViewTNS._constraintLeft) + "-[layer]-" + view_1.layout.toDeviceIndependentPixels(this.containerViewTNS._constraintRight) + "-|", 0, null, { layer: containerView }));
+//         var top = NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("V:|-" + topConstraintValue + "-[layer]", 0, null, { layer: containerView });
+//         NSLayoutConstraint.activateConstraints(top);
+//         this.containerViewTop = top.objectAtIndex(0);
+//         containerView.layoutIfNeeded();
+//     };
 
-    FoldingCellExtended.prototype._createContainerView = function (height) {
-        height=75
-        var topConstraintValue = view_1.layout.toDeviceIndependentPixels(20);
-        var containerView = UIView.alloc().initWithFrame(CGRectZero);
-        containerView.translatesAutoresizingMaskIntoConstraints = false;
-        containerView.backgroundColor = UIColor.systemBlue
+//     FoldingCellExtended.prototype._createContainerView = function (height) {
+//         height=75
+//         var topConstraintValue = view_1.layout.toDeviceIndependentPixels(20);
+//         var containerView = UIView.alloc().initWithFrame(CGRectZero);
+//         containerView.translatesAutoresizingMaskIntoConstraints = false;
+//         containerView.backgroundColor = UIColor.systemBlue
 
-        // containerView.addSubview(this.containerViewTNS.nativeViewProtected);
-        this.contentView.addSubview(containerView);
-        this.containerView = containerView;
-        this.resetContainerViewHeightContraint(height);
-        NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("H:|-" + view_1.layout.toDeviceIndependentPixels(10) + "-[layer]-" + view_1.layout.toDeviceIndependentPixels(10) + "-|", 0, null, { layer: containerView }));
-        var top = NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("V:|-" + topConstraintValue + "-[layer]", 0, null, { layer: containerView });
-        NSLayoutConstraint.activateConstraints(top);
-        this.containerViewTop = top.objectAtIndex(0);
-        console.log('Container:::',this.containerView )
+//         // containerView.addSubview(this.containerViewTNS.nativeViewProtected);
+//         this.contentView.addSubview(containerView);
+//         this.containerView = containerView;
+//         this.resetContainerViewHeightContraint(height);
+//         NSLayoutConstraint.activateConstraints(NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("H:|-" + view_1.layout.toDeviceIndependentPixels(10) + "-[layer]-" + view_1.layout.toDeviceIndependentPixels(10) + "-|", 0, null, { layer: containerView }));
+//         var top = NSLayoutConstraint.constraintsWithVisualFormatOptionsMetricsViews("V:|-" + topConstraintValue + "-[layer]", 0, null, { layer: containerView });
+//         NSLayoutConstraint.activateConstraints(top);
+//         this.containerViewTop = top.objectAtIndex(0);
+//         console.log('Container:::',this.containerView )
 
-        containerView.layoutIfNeeded();
-    };
-    return FoldingCellExtended;
-}(FoldingCell));
+//         containerView.layoutIfNeeded();
+//     };
+//     return FoldingCellExtended;
+// }(FoldingCell));
 // exports.FoldingCell = FoldingCellExtended;
 
 
@@ -191,11 +191,13 @@ var FoldingCellExtended = (function (_super) {
         NSLayoutConstraint.activateConstraints(this._containerViewHeightConstraints);
     };
     FoldingCellExtended.prototype.animationDurationType = function (itemIndex, type) {
-        var parent = (this.foregroundViewTNS ? this.foregroundViewTNS.parent : null);
-        return parent.foldAnimationDuration / 1000;
+        // var parent = (this.foregroundViewTNS ? this.foregroundViewTNS.parent : null);
+        // return parent.foldAnimationDuration / 1000;
+
+        return 2;
     };
     FoldingCellExtended.prototype._bindContainerView = function (index, dataItem) {
-        var containerView = this.containerViewTNS;
+        var containerView = this.containerView;
         var parent = containerView.parent;
         var width = view_1.layout.getMeasureSpecSize(parent.widthMeasureSpec);
         containerView.bindingContext = dataItem;
